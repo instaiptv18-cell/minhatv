@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10131c">
+<title>Minha TV</title>
+<style>
+  :root { color-scheme: dark; --bg:#0b0e15; --panel:#151a25; --muted:#929bad; --accent:#6d5dfc; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:Arial,Helvetica,sans-serif; background:var(--bg); color:#f5f6fa; }
+  header { padding:20px clamp(16px,4vw,42px); display:flex; align-items:center; justify-content:space-between; gap:16px; border-bottom:1px solid #252b39; }
+  .brand { font-size:22px; font-weight:800; letter-spacing:.3px; }
+  .brand span { color:#8b80ff; }
+  .layout { max-width:1400px; margin:auto; padding:22px clamp(14px,3vw,32px); display:grid; grid-template-columns:minmax(0,1.7fr) minmax(280px, .8fr); gap:22px; }
+  .player-card,.side-card { background:var(--panel); border:1px solid #252b39; border-radius:16px; overflow:hidden; }
+  .player-head { padding:15px 18px; display:flex; justify-content:space-between; align-items:center; gap:12px; }
+  .player-actions { display:flex; align-items:center; gap:10px; }
+  .fullscreen-btn { border:1px solid #454d62; background:#252c3b; color:#f5f6fa; border-radius:9px; padding:9px 12px; font-size:12px; font-weight:700; cursor:pointer; white-space:nowrap; }
+  .fullscreen-btn:hover { border-color:#8b80ff; background:#302b50; }
+  .screen:fullscreen { width:100vw; height:100vh; aspect-ratio:auto; background:#000; display:flex; align-items:center; justify-content:center; }
+  .screen:fullscreen iframe { width:100%; height:100%; }
+  .screen:fullscreen .empty { background:#050608; }
+  .now { color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:1px; }
+  #playingName { font-size:18px; font-weight:700; margin-top:5px; }
+  .screen { width:100%; aspect-ratio:16/9; background:#050608; position:relative; }
+  iframe { width:100%; height:100%; border:0; display:block; background:#050608; }
+  .empty { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px; color:#9da5b5; }
+  .empty .tv { font-size:48px; margin-bottom:12px; }
+  .player-foot { padding:12px 18px; color:var(--muted); font-size:12px; line-height:1.5; }
+  .side-card { padding:18px; }
+  .side-title { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+  h2 { font-size:17px; margin:0; }
+  .count { color:var(--muted); font-size:12px; }
+  .channel-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; max-height:480px; overflow:auto; padding-right:3px; }
+  .channel { min-width:0; border:1px solid #303748; background:#1b2130; color:white; border-radius:12px; padding:12px 8px; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:9px; transition:.15s; }
+  .channel:hover { border-color:#8b80ff; transform:translateY(-1px); }
+  .channel.active { border-color:#8b80ff; background:#282447; box-shadow:0 0 0 1px #8b80ff inset; }
+  .logo { width:54px; height:54px; border-radius:13px; display:grid; place-items:center; font-weight:900; font-size:20px; color:white; background:linear-gradient(135deg,#6558ee,#29204c); overflow:hidden; }
+  .logo img { width:100%; height:100%; object-fit:contain; background:white; }
+  .channel-name { font-size:13px; font-weight:700; text-align:center; overflow-wrap:anywhere; }
+  @media(max-width:850px) { .layout { grid-template-columns:1fr; } .channel-list { grid-template-columns:repeat(3,minmax(0,1fr)); max-height:none; } }
+  @media(max-width:480px) { header { padding:16px; } .layout { padding:14px; gap:14px; } .channel-list { grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; } .channel { padding:10px 5px; } .logo { width:46px;height:46px; } .channel-name { font-size:11px; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">MINHA <span>TV</span></div>
+  <div style="color:#929bad;font-size:12px">Seus canais em um só lugar</div>
+</header>
+
+<main class="layout">
+  <section class="player-card">
+    <div class="player-head">
+      <div><div class="now">Assistindo agora</div><div id="playingName">Selecione um canal</div></div>
+      <div class="player-actions">
+        <button class="fullscreen-btn" id="fullscreenBtn" type="button" onclick="toggleFullscreen()">⛶ Tela cheia</button>
+        <div style="font-size:20px" aria-hidden="true">📺</div>
+      </div>
+    </div>
+    <div class="screen">
+      <div class="empty" id="emptyState"><div class="tv">📡</div><strong>Nenhum canal selecionado</strong><span style="font-size:13px;margin-top:7px">Escolha um canal na lista ao lado para começar.</span></div>
+      <iframe id="player" title="Reprodutor do canal" sandbox="allow-scripts allow-same-origin allow-forms allow-presentation" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen referrerpolicy="no-referrer"></iframe>
+    </div>
+    <div class="player-foot">Proteção contra redirecionamentos: o player fica isolado para bloquear pop-ups e tentativas de abrir outros aplicativos. Alguns canais podem não funcionar se dependerem dessas permissões. Se o vídeo não carregar, teste outra fonte de incorporação.</div>
+  </section>
+
+  <aside class="side-card">
+    <div class="side-title"><h2>Canais disponíveis</h2><span class="count" id="channelCount">17 canais</span></div>
+    <div class="channel-list" id="channelList"></div>
+  </aside>
+</main>
+
+<script>
+// ================================================================
+// LISTA DE CANAIS — VOCÊ PODE PERSONALIZAR OS 17 CANAIS AQUI.
+//
+// Em cada canal, altere:
+//   name:     nome que aparecerá na lista;
+//   logo:     URL direta da imagem da logo (deixe "" para usar iniciais);
+//   url:      endereço do site/player que será aberto no iframe;
+//   initials: letras exibidas quando não houver logo.
+//
+// Os canais 02 a 17 são espaços reservados para você preencher.
+// Exemplo de logo: "https://site.com/imagens/logo.png"
+// Exemplo de URL:  "https://site.com/player-do-canal"
+//
+// IMPORTANTE: use endereços de transmissão/incorporação que você
+// tenha autorização para acessar. Alguns sites bloqueiam iframe.
+// ================================================================
+
+const channels = [
+  // CANAL 01 — Canal que já veio no seu código. Pode alterar nome, logo e URL.
+  { name: "Cartoon Network", url: "https://ww0.embedtv.cc/cartoonnetwork", logo: "", initials: "CN", color: "linear-gradient(135deg,#111 50%,#f5f5f5 50%)", textColor: "#ef3340" },
+
+  // CANAL 02 — Edite name, logo e url abaixo.
+  { name: "premiere 1", logo: "", url: "https://embedcanaisdetv.xyz/e/index.php?canal=premiereclubes", initials: "pr" },
+
+  // CANAL 03 — Edite name, logo e url abaixo.
+  { name: "Canal 03", logo: "", url: "", initials: "03" },
+
+  // CANAL 04 — Edite name, logo e url abaixo.
+  { name: "Canal 04", logo: "", url: "", initials: "04" },
+
+  // CANAL 05 — Edite name, logo e url abaixo.
+  { name: "Canal 05", logo: "", url: "", initials: "05" },
+
+  // CANAL 06 — Edite name, logo e url abaixo.
+  { name: "Canal 06", logo: "", url: "", initials: "06" },
+
+  // CANAL 07 — Edite name, logo e url abaixo.
+  { name: "Canal 07", logo: "", url: "", initials: "07" },
+
+  // CANAL 08 — Edite name, logo e url abaixo.
+  { name: "Canal 08", logo: "", url: "", initials: "08" },
+
+  // CANAL 09 — Edite name, logo e url abaixo.
+  { name: "Canal 09", logo: "", url: "", initials: "09" },
+
+  // CANAL 10 — Edite name, logo e url abaixo.
+  { name: "Canal 10", logo: "", url: "", initials: "10" },
+
+  // CANAL 11 — Edite name, logo e url abaixo.
+  { name: "Canal 11", logo: "", url: "", initials: "11" },
+
+  // CANAL 12 — Edite name, logo e url abaixo.
+  { name: "Canal 12", logo: "", url: "", initials: "12" },
+
+  // CANAL 13 — Edite name, logo e url abaixo.
+  { name: "Canal 13", logo: "", url: "", initials: "13" },
+
+  // CANAL 14 — Edite name, logo e url abaixo.
+  { name: "Canal 14", logo: "", url: "", initials: "14" },
+
+  // CANAL 15 — Edite name, logo e url abaixo.
+  { name: "Canal 15", logo: "", url: "", initials: "15" },
+
+  // CANAL 16 — Edite name, logo e url abaixo.
+  { name: "Canal 16", logo: "", url: "", initials: "16" },
+
+  // CANAL 17 — Edite name, logo e url abaixo.
+  { name: "Canal 17", logo: "", url: "", initials: "17" }
+];
+
+const list = document.getElementById("channelList");
+const player = document.getElementById("player");
+const emptyState = document.getElementById("emptyState");
+const playingName = document.getElementById("playingName");
+
+function renderChannels() {
+  list.innerHTML = "";
+  channels.forEach((channel, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "channel" + (player.dataset.index == index ? " active" : "");
+    button.setAttribute("aria-label", "Assistir " + channel.name);
+
+    const logo = document.createElement("div");
+    logo.className = "logo";
+    if (channel.logo) {
+      const img = document.createElement("img");
+      img.src = channel.logo;
+      img.alt = "Logo " + channel.name;
+      img.onerror = () => { logo.textContent = channel.initials; };
+      logo.appendChild(img);
+    } else {
+      logo.textContent = channel.initials;
+      if (channel.color) logo.style.background = channel.color;
+      if (channel.textColor) logo.style.color = channel.textColor;
+    }
+
+    const name = document.createElement("span");
+    name.className = "channel-name";
+    name.textContent = channel.name;
+    button.append(logo, name);
+    button.addEventListener("click", () => playChannel(index));
+    list.appendChild(button);
+  });
+
+  document.getElementById("channelCount").textContent =
+    channels.length + (channels.length === 1 ? " canal" : " canais");
+}
+
+// Ativa o modo de tela cheia no player. Em celulares compatíveis,
+// também solicita orientação horizontal para aproveitar melhor a tela.
+async function toggleFullscreen() {
+  const screen = document.querySelector(".screen");
+  try {
+    if (!document.fullscreenElement) {
+      if (screen.requestFullscreen) {
+        await screen.requestFullscreen();
+      } else if (screen.webkitRequestFullscreen) {
+        screen.webkitRequestFullscreen();
+      } else {
+        alert("A tela cheia não é compatível com este navegador.");
+        return;
+      }
+
+      if (screen.orientation && screen.orientation.lock) {
+        try { await screen.orientation.lock("landscape"); } catch (error) {
+          // Alguns navegadores só permitem girar o aparelho manualmente.
+        }
+      }
+    } else {
+      if (document.exitFullscreen) await document.exitFullscreen();
+      if (screen.orientation && screen.orientation.unlock) {
+        screen.orientation.unlock();
+      }
+    }
+  } catch (error) {
+    alert("Não foi possível ativar a tela cheia. Tente girar o celular manualmente.");
+  }
+}
+
+document.addEventListener("fullscreenchange", () => {
+  const button = document.getElementById("fullscreenBtn");
+  const active = !!document.fullscreenElement;
+  button.textContent = active ? "✕ Sair da tela cheia" : "⛶ Tela cheia";
+  if (!active && screen.orientation && screen.orientation.unlock) {
+    screen.orientation.unlock();
+  }
+});
+
+function playChannel(index) {
+  const channel = channels[index];
+
+  // Evita tentar abrir um canal cujo endereço ainda não foi preenchido.
+  if (!channel.url || !channel.url.trim()) {
+    alert("Este canal ainda não foi configurado. Edite a propriedade url dele na lista de canais.");
+    return;
+  }
+
+  player.src = channel.url;
+  player.dataset.index = index;
+  playingName.textContent = channel.name;
+  emptyState.style.display = "none";
+  renderChannels();
+}
+
+renderChannels();
+</script>
+</body>
+</html>
