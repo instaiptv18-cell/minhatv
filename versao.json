@@ -1,6 +1,6 @@
 {
-  "versionCode": 2,
-  "versionName": "2.0",
+  "versionCode": 1,
+  "versionName": "1.0",
   "mensagem": "Tem uma versão nova do Minha TV. Toque em Atualizar para baixar.",
   "apk": "https://github.com/instaiptv18-cell/minhatv/releases/latest/download/minhatv.apk",
   "obrigatoria": false
