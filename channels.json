@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-19T21:15:09.504Z",
+  "updated": "2026-11-19T23:52:36.059Z",
   "channels": [
     {
       "id": "ch_premiere1",
@@ -104,6 +104,14 @@
       "url": "https://ww0.embedtv.cc/espn6",
       "category": "Esportes",
       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIDPC7KB8ej0KPqJtf-8mQDY6vy91OjMxuFde577SdiQ&s=10"
+    },
+    {
+      "id": "ch_mwo7gcjasidd",
+      "active": true,
+      "name": "premiere 1",
+      "url": "https://nphd.online/tv/premiere",
+      "category": "Esportes",
+      "logo": "https://imgs.search.brave.com/nx5_jNKvWhNsG2nC_wN82z5eIZShQkdmfHdWalRULpo/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/Z2lnYW1haXNmaWJy/YS5jb20uYnIvd3At/Y29udGVudC91cGxv/YWRzLzIwMjQvMDkv/UFJFTUlFUkVfNDcw/WDMzMC5wbmc"
     }
   ]
 }
