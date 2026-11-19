@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-19T20:46:20.329Z",
+  "updated": "2026-11-19T21:14:39.373Z",
   "channels": [
     {
       "id": "ch_premiere1",
@@ -62,6 +62,46 @@
       "active": true,
       "name": "ESPN 1",
       "url": "https://ww0.embedtv.cc/espn",
+      "category": "Esportes",
+      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIDPC7KB8ej0KPqJtf-8mQDY6vy91OjMxuFde577SdiQ&s=10"
+    },
+    {
+      "id": "ch_mwo1py5ad9ni",
+      "active": true,
+      "name": "ESPN 2",
+      "url": "https://ww0.embedtv.cc/espn",
+      "category": "Esportes",
+      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIDPC7KB8ej0KPqJtf-8mQDY6vy91OjMxuFde577SdiQ&s=10"
+    },
+    {
+      "id": "ch_mwo1rd9d36a1",
+      "active": true,
+      "name": "ESPN 3",
+      "url": "https://ww0.embedtv.cc/espn3",
+      "category": "Esportes",
+      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIDPC7KB8ej0KPqJtf-8mQDY6vy91OjMxuFde577SdiQ&s=10"
+    },
+    {
+      "id": "ch_mwo1s33ovqb7",
+      "active": true,
+      "name": "ESPN 4",
+      "url": "https://ww0.embedtv.cc/espn4",
+      "category": "Esportes",
+      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIDPC7KB8ej0KPqJtf-8mQDY6vy91OjMxuFde577SdiQ&s=10"
+    },
+    {
+      "id": "ch_mwo1spqx1bq1",
+      "active": true,
+      "name": "ESPN 5",
+      "url": "https://ww0.embedtv.cc/espn5",
+      "category": "Esportes",
+      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIDPC7KB8ej0KPqJtf-8mQDY6vy91OjMxuFde577SdiQ&s=10"
+    },
+    {
+      "id": "ch_mwo1t723rcg2",
+      "active": true,
+      "name": "ESPN 6",
+      "url": "https://ww0.embedtv.cc/espn6",
       "category": "Esportes",
       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIDPC7KB8ej0KPqJtf-8mQDY6vy91OjMxuFde577SdiQ&s=10"
     }
