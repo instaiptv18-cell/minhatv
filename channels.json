@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-19T00:00:00.000Z",
+  "updated": "2026-11-19T20:46:20.329Z",
   "channels": [
     {
       "id": "ch_premiere1",
@@ -56,6 +56,14 @@
       "logo": "https://imgs.search.brave.com/nx5_jNKvWhNsG2nC_wN82z5eIZShQkdmfHdWalRULpo/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/Z2lnYW1haXNmaWJy/YS5jb20uYnIvd3At/Y29udGVudC91cGxv/YWRzLzIwMjQvMDkv/UFJFTUlFUkVfNDcw/WDMzMC5wbmc",
       "url": "https://ww0.embedtv.cc/premiere7",
       "active": true
+    },
+    {
+      "id": "ch_mwo0sknkxlu0",
+      "active": true,
+      "name": "ESPN 1",
+      "url": "https://ww0.embedtv.cc/espn",
+      "category": "Esportes",
+      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIDPC7KB8ej0KPqJtf-8mQDY6vy91OjMxuFde577SdiQ&s=10"
     }
   ]
 }
